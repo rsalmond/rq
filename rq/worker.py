@@ -372,13 +372,15 @@ class Worker(object):
         signal.signal(signal.SIGINT, self.request_stop)
         signal.signal(signal.SIGTERM, self.request_stop)
 
-    def kill_horse(self, sig=SIGKILL):
+    def kill_horse(self, sig=SIGKILL, msg=None):
         """
         Kill the horse but catch "No such process" error has the horse could already be dead.
         """
         try:
             os.kill(self.horse_pid, sig)
             os.waitpid(self.horse_pid, 0)
+            if msg:
+                print(f"Message: {msg}.")
             self.log.info('Killed horse pid %s', self.horse_pid)
         except OSError as e:
             if e.errno == errno.ESRCH:
