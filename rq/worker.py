@@ -695,7 +695,7 @@ class Worker(object):
 
                 # Kill the job from this side if something is really wrong (interpreter lock/etc).
                 if job.timeout != -1 and (utcnow() - job.started_at).total_seconds() > (job.timeout + 60):
-                    self.kill_horse()
+                    self.kill_horse(msg="some timeout shit")
                     break
 
             except OSError as e:
